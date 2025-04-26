@@ -4,6 +4,8 @@ SunVatChecker is a simple and fast PHP dynamic EU VAT Number Validation class th
 
 To use SunVatChecker class, you need to define the `country` and `vat number` parameters you want to verify. If the Country you are sending to is an EU member, the VAT verification step starts, otherwise, a `false` response is sent to the user. If the sent VAT Number is in the correct format, an inquiry is made from the EU VIES system, and a `true` or `false` response is sent to the user depending on the response. If it is in the wrong format or is not a member of the EU, a `false` response is sent to the user.
 
+`Technical Document:` https://www.deepwiki.com/msbatal/PHP-EU-VAT-Number-Validation
+
 <hr>
 
 ### Table of Contents
