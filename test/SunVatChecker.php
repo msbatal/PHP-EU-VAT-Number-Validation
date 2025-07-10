@@ -9,7 +9,7 @@
  * @copyright Copyright (c) 2022, Sunhill Technology <www.sunhillint.com>
  * @license   https://opensource.org/licenses/lgpl-3.0.html The GNU Lesser General Public License, version 3.0
  * @link      https://github.com/msbatal/PHP-EU-VAT-Number-Validation
- * @version   1.1.3
+ * @version   1.2.1
  */
 
 class SunVatChecker
@@ -22,8 +22,8 @@ class SunVatChecker
   protected const EU_COUNTRY_LIST = [
     'Austria' => [
       'code' => 'AT',
-      'length' => 10,
-      'pattern' => '/U\d{9}/'
+      'length' => 9,
+      'pattern' => '/U\d{8}/'
     ],
     'Belgium' => [
       'code' => 'BE',
@@ -33,7 +33,7 @@ class SunVatChecker
     'Bulgaria' => [
       'code' => 'BG',
       'length' => 10,
-      'pattern' => '/\d{10}/'
+      'pattern' => '/\d{9,10}/'
     ],
     'Cyprus' => [
       'code' => 'CY',
@@ -43,7 +43,7 @@ class SunVatChecker
     'Czech Republic' => [
       'code' => 'CZ',
       'length' => 10,
-      'pattern' => '/\d{10}/'
+      'pattern' => '/\d{8,10}/'
     ],
     'Germany' => [
       'code' => 'DE',
@@ -78,7 +78,7 @@ class SunVatChecker
     'France' => [
       'code' => 'FR',
       'length' => 11,
-      'pattern' => '/\d{11}/'
+      'pattern' => '/[A-Z0-9]{2}\d{9}/'
     ],
     'Croatia' => [
       'code' => 'HR',
@@ -113,7 +113,7 @@ class SunVatChecker
     'Lithuania' => [
       'code' => 'LT',
       'length' => 12,
-      'pattern' => '/\d{12}/'
+      'pattern' => '/(\d{9}|\d{12})/'
     ],
     'Malta' => [
       'code' => 'MT',
@@ -137,8 +137,8 @@ class SunVatChecker
     ],
     'Romania' => [
       'code' => 'RO',
-      'length' => 8,
-      'pattern' => '/\d{8}/'
+      'length' => 10,
+      'pattern' => '/\d{2,10}/'
     ],
     'Sweden' => [
       'code' => 'SE',
@@ -201,10 +201,14 @@ class SunVatChecker
    */
   private function splitVatId($vatId = '') {
     $vatId = $this->filterArgument($vatId);
-    if (ctype_alpha(substr($vatId, 0, 2))) {
-      $vatNumber = substr($vatId, 2);
+    if (self::EU_COUNTRY_LIST[$this->country]['code'] == "FR") {
+      $vatNumber = substr($vatId, -self::EU_COUNTRY_LIST[$this->country]['length'], self::EU_COUNTRY_LIST[$this->country]['length']);
     } else {
-      $vatNumber = $vatId;
+      if (ctype_alpha(substr($vatId, 0, 2))) {
+        $vatNumber = substr($vatId, 2);
+      } else {
+        $vatNumber = $vatId;
+      }
     }
     $result = substr($vatNumber, 0, self::EU_COUNTRY_LIST[$this->country]['length']);
     return $result;
